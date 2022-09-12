@@ -31,7 +31,7 @@ def run(cfg: DictConfig):
      
     # initialise the agent
     agents = {}
-    if cfg.experiment.agent_name not in set(['pseudocost_branching', 'strong_branching', 'scip_branching']):
+    if cfg.experiment.agent_name not in ('pseudocost_branching', 'strong_branching', 'scip_branching'):
         # is an ML agent
         path = cfg.experiment.path_to_load_agent + f'/{gen_co_name(cfg.instances.co_class, cfg.instances.co_class_kwargs)}/{cfg.experiment.agent_name}/'
         config = path + 'config.json'
@@ -107,7 +107,7 @@ def run_rl_validator(path,
             agent = SCIPBranchingAgent()
         else:
             raise Exception(f'Unrecognised agent str {agent}, cannot initialise.')
-    
+
     if overwrite:
         # clear all old rl_validator/ folders even if would not be overwritten with current config to prevent testing inconsistencies
         paths = sorted(glob.glob(path+'rl_validator*'))
@@ -128,7 +128,7 @@ def run_rl_validator(path,
 
     # env
     if agent.name == 'scip_branching':
-        env = EcoleConfiguring(observation_function=observation_function,
+        env = EcoleConfiguring(observation_function='default',
                                information_function='default',
                                scip_params=scip_params)
     else:
