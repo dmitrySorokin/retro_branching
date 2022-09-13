@@ -19,8 +19,8 @@ learner:
 instances:
   co_class: 'capacitated_facility_location'
   co_class_kwargs:
-    'n_customers': 20
-    'n_facilities': 20
+    'n_customers': 40
+    'n_facilities': 40
 
 experiment:
   seed: 0

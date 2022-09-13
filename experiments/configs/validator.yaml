@@ -5,14 +5,10 @@ environment:
   scip_params: 'gasse_2019'
 
 instances:
-  co_class: 'set_covering'
+  co_class: 'capacitated_facility_location'
   co_class_kwargs:
-    n_rows: 165
-    n_cols: 230
-  #co_class: 'combinatorial_auction'
-  #co_class_kwargs:
-    #n_items: 10
-    #n_bids: 50
+    'n_customers': 40
+    'n_facilities': 40
     
 validator:
   threshold_difficulty: null
@@ -21,8 +17,8 @@ validator:
   overwrite: True
   
 experiment:
-  agent_name: 'retro' # pseudocost_branching strong_branching scip_branching
-  path_to_load_agent: '/scratch/datasets/retro_branching/instances/retro_branching_paper_validation_agents'
-  path_to_load_instances: '/scratch/datasets/retro_branching/instances/retro_branching_paper_validation_instances'
-  path_to_save: '/scratch/datasets/retro_branching/instances/retro_branching_paper_validation_agents'
+  agent_name: 'random' # strong_branching pseudocost_branching  il retro scip_branching
+  path_to_load_agent: '../../../retro_branching_paper_validation_agents'
+  path_to_load_instances: '../../../retro_branching_paper_validation_instances'
+  path_to_save: '../../../retro_branching_paper_validation_agents'
   device: 'cpu' # cuda:0 cpu
