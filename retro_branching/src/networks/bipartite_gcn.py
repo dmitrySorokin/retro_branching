@@ -19,7 +19,7 @@ class BipartiteGCN(torch.nn.Module):
                  activation=None,
                  cons_nfeats=5,
                  edge_nfeats=1,
-                 var_nfeats=19,
+                 var_nfeats=43,
                  num_heads=1,
                  head_depth=1,
                  linear_weight_init=None,
