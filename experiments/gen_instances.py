@@ -2,7 +2,7 @@ from retro_branching.utils import check_if_network_params_equal, seed_stochastic
 from retro_branching.networks import BipartiteGCN
 from retro_branching.agents import DQNAgent
 from retro_branching.environments import EcoleBranching
-from retro_branching.learners import DQNLearner
+from retro_branching.utils import generate_craballoc
 
 import ecole
 import torch
@@ -61,6 +61,8 @@ def run(cfg: DictConfig):
             instances = ecole.instance.CapacitatedFacilityLocationGenerator(**cfg.instances.co_class_kwargs)
         elif cfg.instances.co_class == 'maximum_independent_set':
             instances = ecole.instance.IndependentSetGenerator(**cfg.instances.co_class_kwargs)
+        elif cfg.instances.co_class == 'crabs':
+            instances = generate_craballoc(**cfg.instances.co_class_kwargs, seed=cfg.experiment.seed)
         else:
             raise Exception(f'Unrecognised co_class {cfg.instances.co_class}')
     print(f'Initialised instance generator.')
@@ -82,8 +84,7 @@ def run(cfg: DictConfig):
 
         instance.write_problem(
             f'../../../retro_branching_paper_validation_instances/'
-            f'capacitated_facility_location_n_customers_{cfg.instances.co_class_kwargs["n_customers"]}_'
-            f'n_facilities_{cfg.instances.co_class_kwargs["n_facilities"]}'
+            f'crabs'
             f'/instance_{i}.mps'
         )
 

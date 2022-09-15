@@ -19,13 +19,38 @@ import networkx as nx
 from networkx.drawing.nx_pydot import graphviz_layout
 
 
+import ecole
+from ecole.scip import Model
+from craballoc.problem import FixedScheduleCRopt
+from craballoc.bnb.fixsched import setup
+
+
+def generate_craballoc(
+    n_time: int = 12,
+    n_resources: int = 20,
+    n_ships: int = 35,
+    strict: bool = False,
+    *,
+    p: float = 0.9,
+    seed: int = None,
+):
+    while True:
+        instance = FixedScheduleCRopt.generate(
+            n_time=n_time,
+            n_resources=n_resources,
+            n_ships=n_ships,
+            strict=strict,
+            p=p,
+            seed=seed,
+        )
+        yield Model.from_pyscipopt(setup(instance))
+
 
 def gen_co_name(co_class, co_class_kwargs):
     _str = f'{co_class}'
     for key, val in co_class_kwargs.items():
         _str += f'_{key}_{val}'
     return _str
-
 
 
 ############################# ECOLE #################################
