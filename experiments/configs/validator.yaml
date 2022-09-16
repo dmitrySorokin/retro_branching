@@ -5,10 +5,11 @@ environment:
   scip_params: 'gasse_2019'
 
 instances:
-  co_class: 'capacitated_facility_location'
+  co_class: 'crabs'
   co_class_kwargs:
-    'n_customers': 40
-    'n_facilities': 40
+    n_time: 12
+    n_resources: 20
+    n_ships: 35
     
 validator:
   threshold_difficulty: null

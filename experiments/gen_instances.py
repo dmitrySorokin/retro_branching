@@ -62,7 +62,7 @@ def run(cfg: DictConfig):
         elif cfg.instances.co_class == 'maximum_independent_set':
             instances = ecole.instance.IndependentSetGenerator(**cfg.instances.co_class_kwargs)
         elif cfg.instances.co_class == 'crabs':
-            instances = generate_craballoc(**cfg.instances.co_class_kwargs, seed=cfg.experiment.seed)
+            instances = generate_craballoc(**cfg.instances.co_class_kwargs)
         else:
             raise Exception(f'Unrecognised co_class {cfg.instances.co_class}')
     print(f'Initialised instance generator.')
@@ -84,7 +84,7 @@ def run(cfg: DictConfig):
 
         instance.write_problem(
             f'../../../retro_branching_paper_validation_instances/'
-            f'crabs'
+            f'crabs_n_time_12_n_resources_20_n_ships_35'
             f'/instance_{i}.mps'
         )
 
