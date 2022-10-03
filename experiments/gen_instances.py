@@ -1,6 +1,4 @@
 from retro_branching.utils import check_if_network_params_equal, seed_stochastic_modules_globally
-from retro_branching.networks import BipartiteGCN
-from retro_branching.agents import DQNAgent
 from retro_branching.environments import EcoleBranching
 from retro_branching.utils import generate_craballoc
 
@@ -34,38 +32,22 @@ def run(cfg: DictConfig):
     print(f'Config:\n{OmegaConf.to_yaml(cfg)}')
     print(f'~' * 80)
 
-    # initialise DQN value network
-    value_network = BipartiteGCN(device=cfg.experiment.device, **cfg.network)
-    if cfg.network.init_value_network_path is not None:
-        value_network.load_state_dict(
-            torch.load(cfg.network.init_value_network_path, map_location=value_network.device))
-    if cfg.network.reinitialise_heads:
-        value_network.init_model_parameters(init_gnn_params=False, init_heads_params=True)
-    print(f'Initialised DQN value network.')
-
-    # initialise DQN agent in train mode
-    agent = DQNAgent(device=cfg.experiment.device, value_network=value_network, **cfg.agent)
-    agent.train()
-    print(f'Initialised DQN agent.')
-
     # initialise instance generator
-    if 'path_to_instances' in cfg.instances:
-        instances = ecole.instance.FileGenerator(cfg.instances.path_to_instances,
-                                                 sampling_mode=cfg.instances.sampling_mode)
+    if cfg.instances.co_class == 'set_covering':
+        instances = ecole.instance.SetCoverGenerator(**cfg.instances.co_class_kwargs)
+    elif cfg.instances.co_class == 'combinatorial_auction':
+        instances = ecole.instance.CombinatorialAuctionGenerator(**cfg.instances.co_class_kwargs)
+    elif cfg.instances.co_class == 'capacitated_facility_location':
+        instances = ecole.instance.CapacitatedFacilityLocationGenerator(**cfg.instances.co_class_kwargs)
+    elif cfg.instances.co_class == 'maximum_independent_set':
+        instances = ecole.instance.IndependentSetGenerator(**cfg.instances.co_class_kwargs)
+    elif cfg.instances.co_class == 'crabs':
+        instances = generate_craballoc(**cfg.instances.co_class_kwargs)
     else:
-        if cfg.instances.co_class == 'set_covering':
-            instances = ecole.instance.SetCoverGenerator(**cfg.instances.co_class_kwargs)
-        elif cfg.instances.co_class == 'combinatorial_auction':
-            instances = ecole.instance.CombinatorialAuctionGenerator(**cfg.instances.co_class_kwargs)
-        elif cfg.instances.co_class == 'capacitated_facility_location':
-            instances = ecole.instance.CapacitatedFacilityLocationGenerator(**cfg.instances.co_class_kwargs)
-        elif cfg.instances.co_class == 'maximum_independent_set':
-            instances = ecole.instance.IndependentSetGenerator(**cfg.instances.co_class_kwargs)
-        elif cfg.instances.co_class == 'crabs':
-            instances = generate_craballoc(**cfg.instances.co_class_kwargs)
-        else:
-            raise Exception(f'Unrecognised co_class {cfg.instances.co_class}')
+        raise Exception(f'Unrecognised co_class {cfg.instances.co_class}')
     print(f'Initialised instance generator.')
+
+    print(cfg.environment.scip_params)
 
     # initialise branch-and-bound environment
     env = EcoleBranching(observation_function=cfg.environment.observation_function,
@@ -75,7 +57,7 @@ def run(cfg: DictConfig):
     print(f'Initialised environment.')
 
     # data generation
-    for i in trange(100):
+    for i in trange(1000):
         done = True
         while done:
             instance = next(instances)
