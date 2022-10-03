@@ -172,9 +172,10 @@ class TopKAgent:
             self.action_idx = torch.stack([q.argmax() for q in self.preds])
             self.action = torch.stack([_action_set[idx] for _action_set, idx in zip(self.action_set, self.action_idx)])
         else:
-            scores = self.extract(kwargs['model'], kwargs['done'])
+            scores = self.extract(kwargs['model'], kwargs['done'])[self.action_set]
             _, ids = torch.topk(self.preds, k=10)
-            self.action_idx = scores[self.action_set][ids].argmax()
+            scores[~np.isin(np.arange(len(scores)), ids)] = -10 ** 10
+            self.action_idx = scores.argmax()
             # single observation, exploit
 
             #self.action_idx = torch.argmax(self.preds)
