@@ -3,7 +3,7 @@ from retro_branching.networks import BipartiteGCN
 from retro_branching.agents import DQNAgent
 from retro_branching.environments import EcoleBranching
 from retro_branching.learners import DQNLearner
-from retro_branching.utils import generate_craballoc
+from retro_branching.utils import generate_craballoc, generate_tsp
 
 import ecole
 import torch 
@@ -60,6 +60,8 @@ def run(cfg: DictConfig):
             instances = ecole.instance.IndependentSetGenerator(**cfg.instances.co_class_kwargs)
         elif cfg.instances.co_class == 'crabs':
             instances = generate_craballoc(**cfg.instances.co_class_kwargs)
+        elif cfg.instances.co_class == 'tsp':
+            instances = generate_tsp(**cfg.instances.co_class_kwargs)
         else:
             raise Exception(f'Unrecognised co_class {cfg.instances.co_class}')
     print(f'Initialised instance generator.')
