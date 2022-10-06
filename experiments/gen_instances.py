@@ -1,6 +1,6 @@
 from retro_branching.utils import check_if_network_params_equal, seed_stochastic_modules_globally
 from retro_branching.environments import EcoleBranching
-from retro_branching.utils import generate_craballoc
+from retro_branching.utils import generate_craballoc, generate_tsp
 
 import ecole
 import torch
@@ -43,6 +43,8 @@ def run(cfg: DictConfig):
         instances = ecole.instance.IndependentSetGenerator(**cfg.instances.co_class_kwargs)
     elif cfg.instances.co_class == 'crabs':
         instances = generate_craballoc(**cfg.instances.co_class_kwargs)
+    elif cfg.instances.co_class == 'tsp':
+        instances = generate_tsp(**cfg.instances.co_class_kwargs)
     else:
         raise Exception(f'Unrecognised co_class {cfg.instances.co_class}')
     print(f'Initialised instance generator.')
@@ -66,7 +68,7 @@ def run(cfg: DictConfig):
 
         instance.write_problem(
             f'../../../retro_branching_paper_validation_instances/'
-            f'crabs_n_time_12_n_resources_20_n_ships_35'
+            f'tsp_n_nodes_20_planar_False'
             f'/instance_{i}.mps'
         )
 

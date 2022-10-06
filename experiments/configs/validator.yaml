@@ -4,13 +4,19 @@ environment:
   reward_function: 'default'
   scip_params: 'gasse_2019'
 
+#instances:
+#  co_class: 'crabs'
+#  co_class_kwargs:
+#    n_time: 12
+#    n_resources: 20
+#    n_ships: 35
+
 instances:
-  co_class: 'crabs'
+  co_class: 'tsp'
   co_class_kwargs:
-    n_time: 12
-    n_resources: 20
-    n_ships: 35
-    
+    n_nodes: 20
+    planar: False
+
 validator:
   threshold_difficulty: null
   max_steps: 1000000000000
@@ -18,7 +24,7 @@ validator:
   overwrite: True
   
 experiment:
-  agent_name: 'topk' # strong_branching pseudocost_branching  il retro scip_branching
+  agent_name: 'strong_branching' # strong_branching pseudocost_branching  il retro scip_branching
   path_to_load_agent: '../../../retro_branching_paper_validation_agents'
   path_to_load_instances: '../../../retro_branching_paper_validation_instances'
   path_to_save: '../../../retro_branching_paper_validation_agents'
