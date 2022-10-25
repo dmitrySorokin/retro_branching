@@ -27,6 +27,7 @@ from pyscipopt import quicksum
 import pyscipopt as scip
 
 
+
 def generate_craballoc(
     n_time: int = 12,
     n_resources: int = 20,
@@ -35,7 +36,10 @@ def generate_craballoc(
     *,
     p: float = 0.9,
     seed: int = None,
-):
+    minimize: bool = False,
+    scip: bool = False,
+) -> Model:
+    # pip install git+https://github.com/ivannz/branching-crustaceans.git
     while True:
         instance = FixedScheduleCRopt.generate(
             n_time=n_time,
@@ -45,7 +49,23 @@ def generate_craballoc(
             p=p,
             seed=seed,
         )
-        yield Model.from_pyscipopt(setup(instance))
+
+        # by default crabs maximize, so we flip the sign of `R` to make
+        #  it into a minimization problem.
+        if not minimize:
+            m = setup(instance)
+
+        else:
+            # filp the sign and then create an instance
+            instance.R *= -1
+            m = setup(instance)
+            assert m.getObjectiveSense() == "maximize"
+
+            # directly replace the objective's sense
+            m.setObjective(m.getObjective(), "minimize")
+            assert m.getObjectiveSense() == "minimize"
+
+        yield m if scip else Model.from_pyscipopt(m)
 
 
 def floyd_warshall(x: np.ndarray) -> np.ndarray:
