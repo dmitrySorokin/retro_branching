@@ -24,7 +24,7 @@ validator:
   overwrite: True
   
 experiment:
-  agent_name: 'strong_branching' # strong_branching pseudocost_branching  il retro scip_branching
+  agent_name: 'retro' # strong_branching pseudocost_branching  il retro scip_branching
   path_to_load_agent: '../../../retro_branching_paper_validation_agents'
   path_to_load_instances: '../../../retro_branching_paper_validation_instances'
   path_to_save: '../../../retro_branching_paper_validation_agents'

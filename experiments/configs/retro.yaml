@@ -7,7 +7,7 @@ agent: {}
 
 
 environment:
-  observation_function: '43_var_features'
+  observation_function: '24_var_features'
   information_function: 'default'
   reward_function: 'retro_binary_fathomed'
   scip_params: 'gasse_2019'
@@ -17,11 +17,17 @@ learner:
   agent_reward: 'retro_binary_fathomed'
 
 instances:
-  co_class: 'crabs'
+  co_class: 'combinatorial_auction'
   co_class_kwargs:
-    n_time: 12
-    n_resources: 20
-    n_ships: 35
+    n_items: 100
+    n_bids: 500
+
+#instances:
+#  co_class: 'crabs'
+#  co_class_kwargs:
+#    n_time: 12
+#    n_resources: 20
+#    n_ships: 35
 
 #instances:
 #  co_class: 'tsp'
@@ -31,6 +37,6 @@ instances:
 
 experiment:
   seed: 0
-  device: 'cpu'
+  device: 'cuda:0'
   num_epochs: 5000000
   
