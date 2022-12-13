@@ -38,5 +38,5 @@ instances:
 experiment:
   seed: 0
   device: 'cuda:0'
-  num_epochs: 5000000
+  num_epochs: 4000
   
