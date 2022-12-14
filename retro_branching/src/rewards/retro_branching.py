@@ -310,6 +310,9 @@ class RetroBranching:
                                 print(f'Removing leaf node {node} since was never fathomed by brancher.')
                             self.normalised_lp_gain.tree.tree.graph['visited_node_ids'].remove(node)
 
+            if len(self.normalised_lp_gain.tree.tree) == 0:
+                return {0: 0}
+
             # map which nodes were visited at which step in episode
             self.visited_nodes_to_step_idx = {node: idx for idx, node in enumerate(self.normalised_lp_gain.tree.tree.graph['visited_node_ids'])}
 
