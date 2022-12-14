@@ -1,5 +1,5 @@
 environment:
-  observation_function: '43_var_features'
+  observation_function: '24_var_features'
   information_function: 'default'
   reward_function: 'default'
   scip_params: 'gasse_2019'
@@ -11,11 +11,17 @@ environment:
 #    n_resources: 20
 #    n_ships: 35
 
+#instances:
+#  co_class: 'tsp'
+#  co_class_kwargs:
+#    n_nodes: 20
+#    planar: False
+
 instances:
-  co_class: 'tsp'
+  co_class: 'combinatorial_auction'
   co_class_kwargs:
-    n_nodes: 20
-    planar: False
+    n_items: 100
+    n_bids: 500
 
 validator:
   threshold_difficulty: null
